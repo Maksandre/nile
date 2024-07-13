@@ -1,15 +1,13 @@
-import {HttpTransport, PublicClient} from '@nilfoundation/niljs';
-import config from './utils/config';
+import config from "./utils/config";
+import { initClient } from "./client";
 
 const main = async () => {
-  const client = new PublicClient({
-    transport: new HttpTransport({
-      endpoint: config.url
-    }),
-    shardId: config.shardId
-  });
+  const client = initClient(config.endpoint, config.shardId);
 
-  const shardId = client.getShardId();
-}
+  console.log(await client.estimateGasLimit());
+};
 
-main();
+main().catch((e) => {
+  console.log(e);
+  process.exit(1);
+});
